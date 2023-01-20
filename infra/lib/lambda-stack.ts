@@ -9,7 +9,8 @@ export class LambdaStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    this.CreateLambdaFunction(this, "LambdaFunction");
+    const lambdaName: string = "test-name";
+    this.CreateLambdaFunction(this, lambdaName);
   }
 
   CreateLambdaFunction(construct: Construct, name: string) {
