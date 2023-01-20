@@ -1,6 +1,13 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { CdkTemplateStack } from '../lib/cdk-template-stack';
+import { LambdaStack } from '../lib/lambda-stack';
+import { ECRStack } from '../lib/ecr-stack';
 
+const envECR = { 
+    account: process.env.CDK_DEFAULT_ACCOUNT, 
+    region: process.env.CDK_DEFAULT_REGION,
+    REPO_NAME: 'lambda-ecr-repo' 
+};
 const app = new cdk.App();
-new CdkTemplateStack(app, 'CdkTemplateStack');
+new ECRStack(app, 'ECRStack', { env: envECR } );
+new LambdaStack(app, 'LambdaStack');
