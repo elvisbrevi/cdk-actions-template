@@ -3,20 +3,23 @@ import * as cdk from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import path = require('path');
+import { Construct } from 'constructs';
 
 export class LambdaStack extends cdk.Stack {
   constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
+    this.CreateLambdaFunction(this, "LambdaFunction");
+  }
+
+  CreateLambdaFunction(construct: Construct, name: string) {
     const dockerfile = path.join(__dirname, "../../lambda/example-1");
-    // Create AWS Lambda function and push image to ECR
-    const hello = new lambda.DockerImageFunction(this, "function", {
+    const hello = new lambda.DockerImageFunction(this, name, {
       code: lambda.DockerImageCode.fromImageAsset(dockerfile),
+      functionName: name
     });
 
-    // defines an API Gateway REST API resource backed by our "hello" function.
     new apigw.LambdaRestApi(this, 'Endpoint', {
-      
       handler: hello
     });
   }
