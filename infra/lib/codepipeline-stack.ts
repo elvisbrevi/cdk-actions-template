@@ -21,7 +21,7 @@ export class CodePipelineStack extends Stack {
             repo: 'cdk-template',
             oauthToken: cdk.SecretValue.secretsManager('github-oauth-token'),
             output: new Artifact(),
-            branch: 'main',
+            branch: 'master',
         });
 
         pipeline.addStage({
