@@ -1,12 +1,12 @@
 "use-strict"
-import * as cdk from 'aws-cdk-lib';
+import { Construct } from 'constructs';
+import { App, Stack, StackProps } from 'aws-cdk-lib';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
 import path = require('path');
-import { Construct } from 'constructs';
 
-export class LambdaStack extends cdk.Stack {
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+export class LambdaStack extends Stack {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const lambdaName: string = "test-name";

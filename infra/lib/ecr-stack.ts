@@ -1,13 +1,13 @@
 "use-strict"
-import * as cdk from 'aws-cdk-lib';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
 import { Construct } from 'constructs';
+import { App, Stack, StackProps } from 'aws-cdk-lib';
 
-export class ECRStack extends cdk.Stack {
+export class ECRStack extends Stack {
 
   public repository : ecr.Repository;
 
-  constructor(scope: cdk.App, id: string, props?: cdk.StackProps) {
+  constructor(scope: App, id: string, props?: StackProps) {
     super(scope, id, props);
 
     const repoName: string = "test-name";
