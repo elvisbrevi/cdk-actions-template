@@ -1,59 +1,31 @@
 "use-strict"
 import { Construct } from 'constructs';
 import * as cdk from 'aws-cdk-lib';
-import { App, Stack, StackProps } from 'aws-cdk-lib';
-import { GitHubSourceAction } from 'aws-cdk-lib/aws-codepipeline-actions';
-import { Artifact, Pipeline } from 'aws-cdk-lib/aws-codepipeline';
-import { PipelineProject } from 'aws-cdk-lib/aws-codebuild';
+import { CodePipeline, CodePipelineSource, ManualApprovalStep, ShellStep } from 'aws-cdk-lib/pipelines';
+import { PipelineAppsStage } from './stage';
 
-export class CodePipelineStack extends Stack {
+export class CodePipelineStack extends cdk.Stack {
 
-    constructor(scope: App, id: string, props?: StackProps) {
+    constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
-
-        const pipeline = new Pipeline(this, 'MyPipeline', {
-            pipelineName: 'MyGitHubPipeline'
+ 
+        const pipeline = new CodePipeline(this, 'MyPipeline', {
+            pipelineName: 'TestPipeline',
+            synth: new ShellStep('TestSynth', {
+                input: CodePipelineSource.gitHub('elvisbrevi/cdk-template', 'master', {
+                    authentication: cdk.SecretValue.secretsManager("github-token2")
+                }),
+                commands: ['npm ci',
+                        'npm run build',
+                        'npm cdk synth']
+            })
         });
 
-        const sourceAction = new GitHubSourceAction({
-            actionName: 'GitHub_Source',
-            owner: 'elvisbrevi',
-            repo: 'cdk-template',
-            oauthToken: cdk.SecretValue.secretsManager('github-oauth-token'),
-            output: new Artifact(),
-            branch: 'master',
-        });
+        const testingStage = pipeline.addStage(new PipelineAppsStage(this, 'develop'));
 
-        pipeline.addStage({
-            stageName: 'Source',
-            actions: [sourceAction],
-        });
+        testingStage.addPost(new ManualApprovalStep('Manual approval before production'));
 
-
-        const project = new PipelineProject(this, 'MyBuildProject', {
-            buildSpec: cdk.aws_codebuild.BuildSpec.fromObject({
-                version: '0.2',
-                phases: {
-                    build: {
-                        commands: [
-                            'echo "Build started on `date`"'
-                        ]
-                    },
-                },
-            }),
-        });
-        const buildStage = new cdk.Stage(this, 'Build');
-        const buildAction = new cdk.aws_codepipeline_actions.CodeBuildAction({
-            actionName: 'Build',
-            project,
-            input: new Artifact(buildStage.artifactId),
-            outputs: [new Artifact(buildStage.artifactId)],
-        });
-
-        pipeline.addStage({
-            stageName: 'Build',
-            actions: [buildAction],
-        });
+        const prodStage = pipeline.addStage(new PipelineAppsStage(this, 'prod'));
        
     }
 
