@@ -2,7 +2,11 @@ name: Build and push image to AWS ECR, Create Lambda + ApiGateway previous ECR,
       and attach SQS Queue Messages.
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+  pull_request_review:
+    types:
+      - submitted
 
 env:
   ecr_name: editorjs-ecr
