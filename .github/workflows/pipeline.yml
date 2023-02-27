@@ -8,9 +8,6 @@ on:
     types:
       - submitted
 
-env:
-  ecr_name: example-ecr
-
 jobs:
   build:
     name: Build Image
@@ -27,7 +24,7 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-east-1
 
-    - name: Create ECR with CDK
+    - name: Create ECRs with CDK
       run: |
         cd infra
         npm install
@@ -35,7 +32,8 @@ jobs:
         npm install -g aws-cdk
         cdk synth
         cdk bootstrap
-        cdk deploy example-ecr --require-approval never
+        cdk deploy example-ecr-save-user --require-approval never
+        cdk deploy example-ecr-save-order --require-approval never
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -44,16 +42,20 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: ${{ env.ecr_name }}
-        IMAGE_TAG: example-image #${{ github.sha }}
       run: |
-        cd lambda/example-function
+        cd lambda/example-save-order
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker build -t $ECR_REPOSITORY .
-        docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
-        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+        docker build -t example-ecr-save-user .
+        docker tag example-ecr-save-user:latest $ECR_REGISTRY/example-ecr-save-user:latest
+        docker push $ECR_REGISTRY/example-ecr-save-user:latest
+
+        cd lambda/example-save-order
+        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
+        docker build -t example-ecr-save-order .
+        docker tag example-ecr-save-order:latest $ECR_REGISTRY/example-ecr-save-order:latest
+        docker push $ECR_REGISTRY/example-ecr-save-order:latest
     
     - name: Create Lambda Funtion with CDK
       run: |
         cd infra
-        cdk deploy example-lamda-from-ecr --require-approval never
+        cdk deploy example-lambda-services --require-approval never

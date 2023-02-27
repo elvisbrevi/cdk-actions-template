@@ -5,6 +5,6 @@ exports.handler = async function(event) {
     statusCode: 200,
     headers: { "Content-Type": "text/plain" },
     
-    body: `From Expample folder, CDK! You've hit ${event.path}\n`
+    body: `save user`
   };
 };
