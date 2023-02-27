@@ -53,7 +53,7 @@ export class ExampleLambdaStack extends Stack {
     // lambda from ecr
     const lambdaHelper: LambdaHelper = new LambdaHelper(this);
     const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(
-      repository, 'example-order-user', 'dev');
+      repository, 'example-save-order', 'dev');
 
     // add queue source to lambda
     lambdaHelper.AddEventSource(lambda, queueSource);
