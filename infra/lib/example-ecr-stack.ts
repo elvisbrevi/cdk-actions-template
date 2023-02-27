@@ -2,7 +2,7 @@
 import { Construct } from 'constructs';
 import { Stack, StackProps } from 'aws-cdk-lib';
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import { EcrHelper as EcrHelper } from '../helpers/ecr-helper';
+import { EcrHelper } from '../helpers/ecr-helper';
 
 export class ExampleEcrStack extends Stack {
 
