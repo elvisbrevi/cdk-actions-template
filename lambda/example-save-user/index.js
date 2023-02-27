@@ -10,9 +10,9 @@ exports.handler = async function(event) {
   var params = {
     TableName: 'users',
     Item: {
-      'id' : 1,
-      'name' : 'Elvis',
-      'address': 'Coronel'
+      'id' : {N: '001'},
+      'name' : {S: 'Elvis'},
+      'address': {S: 'Coronel'},
     }
   };
 
@@ -28,7 +28,7 @@ exports.handler = async function(event) {
       return {
         statusCode: 201,
         headers: { "Content-Type": "text/plain" },
-        body: `save user!`
+        body: `save user!` + data
       };
     }
   });
