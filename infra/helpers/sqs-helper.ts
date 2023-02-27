@@ -11,6 +11,7 @@ export class SqsHelper extends ServiceHelper  {
         receiveMessageWaitTime: number = 20) : sqs.Queue {
             
         return new sqs.Queue(this.construct, name, {
+            queueName: name,
             visibilityTimeout: Duration.seconds(visibilityTimeout),
             receiveMessageWaitTime: Duration.seconds(receiveMessageWaitTime),
         });

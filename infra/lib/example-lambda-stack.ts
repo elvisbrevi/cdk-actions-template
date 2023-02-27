@@ -12,15 +12,17 @@ export class ExampleLambdaStack extends Stack {
   constructor(scope: Construct, id: string, repository: IRepository, props?: StackProps) {
     super(scope, id, props);
     
+    const sqsHelper: SqsHelper = new SqsHelper(this);
+    const queueDestination = sqsHelper.CreateQueue('example-sqs-destination');
+
     const lambdaHelper: LambdaHelper = new LambdaHelper(this);
-    const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(repository, 'example-lambda', 'dev');
+    const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(
+      repository, 'example-lambda', 'dev', queueDestination);
     const apigwt: ApiGwHelper = new ApiGwHelper(this);
     apigwt.CreateApiGwtForLambda('example-apigwt', lambda);
 
-    const sqsHelper: SqsHelper = new SqsHelper(this);
-    const queue = sqsHelper.CreateQueue('example-sqs');
-
-    lambdaHelper.AddEventSource(lambda, queue);
+    const queueSource = sqsHelper.CreateQueue('example-sqs-source');
+    lambdaHelper.AddEventSource(lambda, queueSource);
 
   }
 }
