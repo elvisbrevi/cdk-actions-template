@@ -9,7 +9,7 @@ on:
       - submitted
 
 env:
-  ecr_name: editorjs-ecr
+  ecr_name: example-ecr
 
 jobs:
   build:
@@ -28,8 +28,6 @@ jobs:
         aws-region: us-east-1
 
     - name: Create ECR with CDK
-      env:
-        ECR_REPOSITORY: ${{ env.ecr_name }}
       run: |
         cd infra
         npm install
@@ -37,7 +35,7 @@ jobs:
         npm install -g aws-cdk
         cdk synth
         cdk bootstrap
-        cdk deploy editorjs-ecr --require-approval never
+        cdk deploy example-ecr --require-approval never
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -47,9 +45,9 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: ${{ env.ecr_name }}
-        IMAGE_TAG: editorjs-image #${{ github.sha }}
+        IMAGE_TAG: example-image #${{ github.sha }}
       run: |
-        cd lambda/editorjs
+        cd lambda/example-function
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t $ECR_REPOSITORY .
         docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
@@ -58,4 +56,4 @@ jobs:
     - name: Create Lambda Funtion with CDK
       run: |
         cd infra
-        cdk deploy editorjs-function --require-approval never
+        cdk deploy example-lamda-from-ecr --require-approval never
