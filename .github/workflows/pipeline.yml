@@ -49,7 +49,8 @@ jobs:
         docker tag example-ecr-save-user:latest $ECR_REGISTRY/example-ecr-save-user:latest
         docker push $ECR_REGISTRY/example-ecr-save-user:latest
 
-        cd lambda/example-save-order
+        cd ..
+        cd example-save-order
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t example-ecr-save-order .
         docker tag example-ecr-save-order:latest $ECR_REGISTRY/example-ecr-save-order:latest
