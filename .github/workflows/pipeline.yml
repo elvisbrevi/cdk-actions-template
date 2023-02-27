@@ -43,7 +43,7 @@ jobs:
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
       run: |
-        cd lambda/example-save-order
+        cd lambda/example-save-user
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
         docker build -t example-ecr-save-user .
         docker tag example-ecr-save-user:latest $ECR_REGISTRY/example-ecr-save-user:latest
