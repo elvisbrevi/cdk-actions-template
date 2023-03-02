@@ -10,19 +10,10 @@ import { DynamoDbHelper } from '../helpers/dynamo-helper';
 
 export class ExampleLambdaStack extends Stack {
 
-  constructor(
-    scope: Construct, id: string, 
-    saveUserEcr: IRepository, 
-    saveOrderEcr: IRepository, 
-    props?: StackProps) {
+  constructor(scope: Construct, id: string, repo: IRepository, props?: StackProps) {
 
     super(scope, id, props);
 
-    this.CreateSaveUserService(saveUserEcr);
-    this.CreateSaveOrderService(saveOrderEcr);
-  }
-
-  CreateSaveUserService(repository: IRepository) {
     // dynamodb
     const dynamodbHelper: DynamoDbHelper = new DynamoDbHelper(this);
     dynamodbHelper.CreateTable('users');
@@ -34,33 +25,11 @@ export class ExampleLambdaStack extends Stack {
     // lambda from ecr
     const lambdaHelper: LambdaHelper = new LambdaHelper(this);
     const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(
-      repository, 'example-save-user', 'dev', queueDestination);
+      repo, 'example-save-user', 'dev', queueDestination);
 
     // api gateway for lambda
     const apigwt: ApiGwHelper = new ApiGwHelper(this);
     apigwt.CreateApiGwtForLambda('example-apigwt-save-user', lambda);
-  }
-
-  CreateSaveOrderService(repository: IRepository) {
-    // dynamodb
-    const dynamodbHelper: DynamoDbHelper = new DynamoDbHelper(this);
-    dynamodbHelper.CreateTable('orders');
-    
-    // queue destination
-    const sqsHelper: SqsHelper = new SqsHelper(this);
-    const queueSource = sqsHelper.CreateQueue('example-queue-order-user');
-
-    // lambda from ecr
-    const lambdaHelper: LambdaHelper = new LambdaHelper(this);
-    const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(
-      repository, 'example-save-order', 'dev');
-
-    // add queue source to lambda
-    lambdaHelper.AddEventSource(lambda, queueSource);
-
-    // api gateway for lambda
-    const apigwt: ApiGwHelper = new ApiGwHelper(this);
-    apigwt.CreateApiGwtForLambda('example-apigwt-save-order', lambda);
   }
 
 }

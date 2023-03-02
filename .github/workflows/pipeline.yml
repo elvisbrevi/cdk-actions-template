@@ -8,6 +8,10 @@ on:
     types:
       - submitted
 
+env:
+  EXAMPLE_ECR: example-ecr-stack
+  EXAMPLE_LAMBDA: example-lambda-stack
+
 jobs:
   build:
     name: Build Image
@@ -32,8 +36,7 @@ jobs:
         npm install -g aws-cdk
         cdk synth
         cdk bootstrap
-        cdk deploy example-ecr-save-user --require-approval never
-        cdk deploy example-ecr-save-order --require-approval never
+        cdk deploy $EXAMPLE_ECR --require-approval never
 
     - name: Login to Amazon ECR
       id: login-ecr
@@ -45,18 +48,11 @@ jobs:
       run: |
         cd lambda/example-save-user
         aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker build -t example-ecr-save-user .
-        docker tag example-ecr-save-user:latest $ECR_REGISTRY/example-ecr-save-user:latest
-        docker push $ECR_REGISTRY/example-ecr-save-user:latest
-
-        cd ..
-        cd example-save-order
-        aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $ECR_REGISTRY
-        docker build -t example-ecr-save-order .
-        docker tag example-ecr-save-order:latest $ECR_REGISTRY/example-ecr-save-order:latest
-        docker push $ECR_REGISTRY/example-ecr-save-order:latest
+        docker build -t $EXAMPLE_ECR .
+        docker tag $EXAMPLE_ECR:latest $ECR_REGISTRY/$EXAMPLE_ECR:latest
+        docker push $ECR_REGISTRY/$EXAMPLE_ECR:latest
     
     - name: Create Lambda Funtion with CDK
       run: |
         cd infra
-        cdk deploy example-lambda-services --require-approval never
+        cdk deploy $EXAMPLE_LAMBDA --require-approval never
