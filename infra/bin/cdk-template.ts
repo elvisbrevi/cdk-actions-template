@@ -6,6 +6,6 @@ import { ExampleEcrStack } from '../lib/example-ecr-stack';
 const app = new cdk.App();
 
 const ecrStack = new ExampleEcrStack(app, 'example-ecr-stack');
-const lambdaStack = new ExampleLambdaStack(app, 'example-lambda-stack', ecrStack.repository);
+new ExampleLambdaStack(app, 'example-lambda-stack', ecrStack.repository);
 
 app.synth();
