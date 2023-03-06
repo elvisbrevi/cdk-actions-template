@@ -1,9 +1,9 @@
-FROM amazon/aws-lambda-nodejs:12
+FROM public.ecr.aws/lambda/nodejs:18
 
-ARG FUNCTION_DIR="/var/task"
+COPY index.js package*.json ./
 
-RUN mkdir -p ${FUNCTION_DIR}
-
-COPY index.js ${FUNCTION_DIR}
+RUN npm install
+# If you are building your code for production, instead include a package-lock.json file on this directory and use:
+# RUN npm ci --production
 
 CMD [ "index.handler" ]
