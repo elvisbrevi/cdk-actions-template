@@ -2,7 +2,7 @@ FROM public.ecr.aws/lambda/nodejs:18
 
 COPY index.js package*.json ./
 
-RUN npm install
+#RUN npm install
 # If you are building your code for production, instead include a package-lock.json file on this directory and use:
 # RUN npm ci --production
 
