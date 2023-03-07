@@ -15,7 +15,9 @@ export class LambdaHelper extends ServiceHelper {
         destination?: IQueue) : lambda.IFunction {
 
         return new lambda.DockerImageFunction(this.construct, name, {
-            code: lambda.DockerImageCode.fromEcr(repository),
+            code: lambda.DockerImageCode.fromEcr(repository, {
+                tagOrDigest: "latest"
+            }),
             functionName: name,
             environment: { stageName: stageName },
             onSuccess: destination != undefined ? new SqsDestination(destination) : undefined
