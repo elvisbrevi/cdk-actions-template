@@ -1,11 +1,11 @@
 "use-strict"
 import * as ecr from 'aws-cdk-lib/aws-ecr';
-import { ServiceHelper } from './service-helper';
+import { Construct } from 'constructs';
 
-export class EcrHelper extends ServiceHelper {
+export class EcrHelper {
      
-    public CreateEcrRepository(name: string) : ecr.Repository {
-        return new ecr.Repository(this.construct, name, {
+    public static CreateEcrRepository(construct: Construct, name: string) : ecr.Repository {
+        return new ecr.Repository(construct, name, {
             repositoryName: name
         });
     }

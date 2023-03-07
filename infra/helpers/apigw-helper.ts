@@ -1,12 +1,13 @@
 "use-strict"
 import * as apigw from 'aws-cdk-lib/aws-apigateway';
-import { ServiceHelper } from './service-helper';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
+import { Construct } from 'constructs';
 
-export class ApiGwHelper extends ServiceHelper  {
+export class ApiGwHelper  {
 
-    public CreateApiGwtForLambda(id: string, fn: IFunction): apigw.LambdaRestApi { 
-        return new apigw.LambdaRestApi(this.construct, id, {
+    public static CreateApiGwtForLambda(construct: Construct, id: string, fn: IFunction)
+    : apigw.LambdaRestApi { 
+        return new apigw.LambdaRestApi(construct, id, {
             handler: fn,
         });
     }

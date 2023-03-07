@@ -1,20 +1,21 @@
 "use-strict"
 import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { IRepository } from 'aws-cdk-lib/aws-ecr';
-import { ServiceHelper } from './service-helper';
 import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { SqsDestination } from 'aws-cdk-lib/aws-lambda-destinations';
+import { Construct } from 'constructs';
 
-export class LambdaHelper extends ServiceHelper {
+export class LambdaHelper {
     
-    public CreateFunctionFromEcr(
+    public static CreateFunctionFromEcr(
+        construct: Construct,
         repository: IRepository, 
         name: string, 
         stageName: string, 
         destination?: IQueue) : lambda.IFunction {
 
-        return new lambda.DockerImageFunction(this.construct, name, {
+        return new lambda.DockerImageFunction(construct, name, {
             code: lambda.DockerImageCode.fromEcr(repository, {
                 tagOrDigest: "latest"
             }),
@@ -24,7 +25,7 @@ export class LambdaHelper extends ServiceHelper {
         });
     }
 
-    public AddEventSource(fn: lambda.IFunction, queue: IQueue) {
+    public static AddEventSource(fn: lambda.IFunction, queue: IQueue) {
         const eventSource = new SqsEventSource(queue);
         fn.addEventSource(eventSource);
     }

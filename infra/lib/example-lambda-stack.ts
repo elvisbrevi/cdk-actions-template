@@ -23,9 +23,8 @@ export class ExampleLambdaStack extends Stack {
     //const queueSource = sqsHelper.CreateQueue('example-queue-save-user');
 
     // lambda from ecr
-    const lambdaHelper: LambdaHelper = new LambdaHelper(this);
-    const lambda: IFunction = lambdaHelper.CreateFunctionFromEcr(
-      repo, 'example-save-user', 'dev');
+    const lambda: IFunction = LambdaHelper.CreateFunctionFromEcr(
+      scope, repo, 'example-save-user', 'dev');
 
     // add event source to lambda from queue source (sqs)
     //lambdaHelper.AddEventSource(lambda, queueSource);
