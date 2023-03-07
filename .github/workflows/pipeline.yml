@@ -1,5 +1,4 @@
-name: Build and push image to AWS ECR, Create Lambda + ApiGateway previous ECR, 
-      and attach SQS Queue Messages.
+name: CDK Template.
 on:
   push:
     branches:
