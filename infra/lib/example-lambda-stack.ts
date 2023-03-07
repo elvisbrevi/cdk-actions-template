@@ -30,8 +30,10 @@ export class ExampleLambdaStack extends Stack {
     //lambdaHelper.AddEventSource(lambda, queueSource);
 
     // api gateway for lambda
-    // const apigwt: ApiGwHelper = new ApiGwHelper(this);
-    // apigwt.CreateApiGwtForLambda('example-apigwt-save-user', lambda);
+    const restApi = ApiGwHelper.CreateRestApi(this, 'example-apigwt-save-user');
+    const resource = ApiGwHelper.AddResourceToRestApi(this, restApi, 'users');
+    const integration = ApiGwHelper.AddLambdaIntegration(lambda);
+    const method = ApiGwHelper.AddMethod("POST", resource, integration);
   }
 
 }
