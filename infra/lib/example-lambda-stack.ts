@@ -15,12 +15,12 @@ export class ExampleLambdaStack extends Stack {
     super(scope, id, props);
 
     // dynamodb
-    const dynamodbHelper: DynamoDbHelper = new DynamoDbHelper(this);
-    dynamodbHelper.CreateTable('users');
+    //const dynamodbHelper: DynamoDbHelper = new DynamoDbHelper(this);
+    //dynamodbHelper.CreateTable('users');
     
     // queue source
-    const sqsHelper: SqsHelper = new SqsHelper(this);
-    const queueSource = sqsHelper.CreateQueue('example-queue-save-user');
+    //const sqsHelper: SqsHelper = new SqsHelper(this);
+    //const queueSource = sqsHelper.CreateQueue('example-queue-save-user');
 
     // lambda from ecr
     const lambdaHelper: LambdaHelper = new LambdaHelper(this);
@@ -28,7 +28,7 @@ export class ExampleLambdaStack extends Stack {
       repo, 'example-save-user', 'dev');
 
     // add event source to lambda from queue source (sqs)
-    lambdaHelper.AddEventSource(lambda, queueSource);
+    //lambdaHelper.AddEventSource(lambda, queueSource);
 
     // api gateway for lambda
     const apigwt: ApiGwHelper = new ApiGwHelper(this);
