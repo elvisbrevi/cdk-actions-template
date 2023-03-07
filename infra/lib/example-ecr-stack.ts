@@ -11,7 +11,6 @@ export class ExampleEcrStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
     
-    const ecrHelper: EcrHelper = new EcrHelper(this);
-    this.repository = ecrHelper.CreateEcrRepository(id);
+    this.repository = EcrHelper.CreateEcrRepository(scope, id);
   }
 }
