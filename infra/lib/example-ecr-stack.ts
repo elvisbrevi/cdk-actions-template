@@ -10,7 +10,7 @@ export class ExampleEcrStack extends Stack {
 
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-    
-    this.repository = EcrHelper.CreateEcrRepository(scope, id);
+
+    this.repository = EcrHelper.CreateEcrRepository(this, id);
   }
 }
