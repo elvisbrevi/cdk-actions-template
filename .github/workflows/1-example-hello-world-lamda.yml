@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - ../../examples/1-hello-world-lambda/*
+      - '../../examples/1-hello-world-lambda/*'
   pull_request_review:
     types:
       - submitted
