@@ -5,6 +5,7 @@ on:
       - master
     paths:
       - 'examples/1-hello-world-lambda/*'
+      - './.github/workflows/1-example-hello-world-lambda'
   pull_request_review:
     types:
       - submitted
