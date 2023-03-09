@@ -7,6 +7,22 @@ import { SqsDestination } from 'aws-cdk-lib/aws-lambda-destinations';
 import { Construct } from 'constructs';
 
 export class LambdaHelper {
+
+    public static CreateFunctionFromFile(
+        construct: Construct,
+        path: string, 
+        name: string, 
+        stageName: string, 
+        destination?: IQueue) : lambda.IFunction {
+
+        return new lambda.Function(construct, name, {
+            runtime: lambda.Runtime.NODEJS_18_X,
+            handler: 'index.handler',
+            code: lambda.Code.fromAsset(path),
+            environment: { stageName: stageName },
+            onSuccess: destination != undefined ? new SqsDestination(destination) : undefined
+        });
+    }
     
     public static CreateFunctionFromEcr(
         construct: Construct,

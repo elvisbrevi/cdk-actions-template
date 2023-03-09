@@ -1,0 +1,27 @@
+name: CDK Template.
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - ../../examples/1-hello-world-lambda
+      - ../../infra/lib/1-hello-world-lambda.ts
+  pull_request_review:
+    types:
+      - submitted
+
+env:
+  EXAMPLE_LAMBDA: example-hello-world
+
+jobs:
+  build:
+    name: Build Lambda Function
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v3
+    
+    - name: Create Lambda Funtion with CDK
+      run: |
+        cd infra
+        cdk deploy $EXAMPLE_LAMBDA --require-approval never
