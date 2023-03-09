@@ -24,7 +24,7 @@ jobs:
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v2
       with:
-        role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCESS_KEY_ID }}:role/example-1-role
+        role-to-assume: arn:aws:iam::202867896338:role/example-1-role
         role-session-name: Example 1
         aws-region: us-east-1
     
