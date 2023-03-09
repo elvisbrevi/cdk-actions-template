@@ -3,8 +3,8 @@ on:
   push:
     branches:
       - master
-    #paths:
-    #  - '../../examples/1-hello-world-lambda/*'
+    paths:
+      - '../examples/1-hello-world-lambda/*'
   pull_request_review:
     types:
       - submitted
@@ -22,7 +22,8 @@ jobs:
     
     - name: Create Lambda Funtion with CDK
       run: |
-        cd infra
+        cd examples/1-hello-world-lambda
+        npm install
         npm ci
         npm install -g aws-cdk
         cdk synth
