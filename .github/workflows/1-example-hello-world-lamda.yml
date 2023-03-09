@@ -23,4 +23,8 @@ jobs:
     - name: Create Lambda Funtion with CDK
       run: |
         cd infra
+        npm ci
+        npm install -g aws-cdk
+        cdk synth
+        cdk bootstrap
         cdk deploy $EXAMPLE_LAMBDA --require-approval never
