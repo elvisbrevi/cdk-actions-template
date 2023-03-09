@@ -16,6 +16,7 @@ export class LambdaHelper {
         destination?: IQueue) : lambda.IFunction {
 
         return new lambda.Function(construct, name, {
+            functionName: name,
             runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'index.handler',
             code: lambda.Code.fromAsset(path),
