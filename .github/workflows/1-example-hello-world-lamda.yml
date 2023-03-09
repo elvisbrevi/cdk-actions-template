@@ -1,4 +1,4 @@
-name: CDK Template.
+name: Example 1.
 on:
   push:
     branches:
