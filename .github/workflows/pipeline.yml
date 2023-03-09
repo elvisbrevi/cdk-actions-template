@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - ../../examples/example-save-user
   pull_request_review:
     types:
       - submitted
