@@ -4,7 +4,7 @@ on:
     branches:
       - master
     paths:
-      - 'examples/1-lambdas/*'
+      - 'examples/1-lambdas/*/*'
   pull_request_review:
     types:
       - submitted
