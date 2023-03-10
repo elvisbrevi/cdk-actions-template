@@ -5,7 +5,6 @@ on:
       - master
     paths:
       - 'examples/1-lambdas/*'
-      - 'infra/lib/examples/1-lambdas.ts'
   pull_request_review:
     types:
       - submitted
