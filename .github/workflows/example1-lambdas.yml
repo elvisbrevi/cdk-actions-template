@@ -4,8 +4,8 @@ on:
     branches:
       - master
     paths:
-      - 'examples/1-hello-world-lambda/*'
-      - './.github/workflows/1-example-hello-world-lambda.yml'
+      - 'examples/1-lambdas/*'
+      - 'infra/lib/examples/1-lambdas.ts'
   pull_request_review:
     types:
       - submitted

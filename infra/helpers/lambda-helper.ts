@@ -5,12 +5,28 @@ import { SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { IQueue } from 'aws-cdk-lib/aws-sqs';
 import { SqsDestination } from 'aws-cdk-lib/aws-lambda-destinations';
 import { Construct } from 'constructs';
+import path = require('path');
 
 export class LambdaHelper {
 
+    public static CreateFunctionFromDockerFile(
+        construct: Construct,
+        filePath: string, 
+        name: string, 
+        stageName: string, 
+        destination?: IQueue) : lambda.Function {
+
+        return new lambda.DockerImageFunction(construct, 'AssetFunction', {
+            functionName: name,
+            code: lambda.DockerImageCode.fromImageAsset(path.join(filePath, 'Dockerfile')),
+            environment: { stageName: stageName },
+            onSuccess: destination != undefined ? new SqsDestination(destination) : undefined
+        });
+    }
+
     public static CreateFunctionFromFile(
         construct: Construct,
-        path: string, 
+        filePath: string, 
         name: string, 
         stageName: string, 
         destination?: IQueue) : lambda.IFunction {
@@ -19,7 +35,7 @@ export class LambdaHelper {
             functionName: name,
             runtime: lambda.Runtime.NODEJS_18_X,
             handler: 'index.handler',
-            code: lambda.Code.fromAsset(path),
+            code: lambda.Code.fromAsset(filePath),
             environment: { stageName: stageName },
             onSuccess: destination != undefined ? new SqsDestination(destination) : undefined
         });
