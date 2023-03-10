@@ -11,7 +11,7 @@ on:
       - submitted
 
 env:
-  EXAMPLE_LAMBDA: example-hello-world
+  EXAMPLE_LAMBDA: lambda-examples
 
 jobs:
   build:

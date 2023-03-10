@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { ExampleHelloWorldLambdaStack } from '../lib/examples/1-lambdas';
+import { LambdaExamplesStack } from '../lib/examples/1-lambdas';
 
 const exampleEnv = { 
   account: process.env.CDK_DEFAULT_ACCOUNT, 
@@ -8,7 +8,7 @@ const exampleEnv = {
 }; 
 const app = new cdk.App();
 
-new ExampleHelloWorldLambdaStack(app, 'lambda-examples', { env: exampleEnv });
+new LambdaExamplesStack(app, 'lambda-examples', { env: exampleEnv });
 
 // const ecrStack = new ExampleEcrStack(app, 'example-ecr-stack');
 // new ExampleLambdaStack(app, 'example-lambda-stack', ecrStack.repository, { 

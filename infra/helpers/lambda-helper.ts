@@ -18,7 +18,7 @@ export class LambdaHelper {
 
         return new lambda.DockerImageFunction(construct, 'AssetFunction', {
             functionName: name,
-            code: lambda.DockerImageCode.fromImageAsset(path.join(filePath, 'Dockerfile')),
+            code: lambda.DockerImageCode.fromImageAsset(path.join(filePath)),
             environment: { stageName: stageName },
             onSuccess: destination != undefined ? new SqsDestination(destination) : undefined
         });
