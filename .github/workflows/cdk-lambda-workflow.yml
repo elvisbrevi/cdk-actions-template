@@ -27,7 +27,7 @@ jobs:
     
     - name: Create Lambda Funtion with CDK
       run: |
-        cd cdk-github-actions-template/infra
+        cd infra
         npm install
         npm ci
         npm install -g aws-cdk
