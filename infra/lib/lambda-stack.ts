@@ -4,9 +4,9 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaHelper } from '../helpers/lambda-helper';
 import { ApiGwHelper } from '../helpers/apigw-helper';
 import { DynamoDbHelper } from '../helpers/dynamodb-helper';
-import * as cdk_dynamodb from 'aws-cdk-lib/aws-dynamodb';
-export class LambdaExamplesStack extends Stack {
 
+export class LambdaExamplesStack extends Stack {
+  
   constructor(scope: Construct, id: string, props?: StackProps) {
     
     super(scope, id, props);

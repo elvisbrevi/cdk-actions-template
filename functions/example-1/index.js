@@ -4,10 +4,10 @@ const input = {
 	TableName : "user",
 	Item: {
 		"name": {
-            S: "pedro"
+            S: "alberto"
         },
 		"country": {
-            S: "chile"
+            S: "argentina"
         },
 	}
 };
